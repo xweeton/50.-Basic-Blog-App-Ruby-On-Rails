@@ -1,20 +1,39 @@
 <%# @article defined in controller is @article = Article.find(params[:id]) %>
-<h1><%= @article.title %></h1>
-<%= link_to 'home', root_path %>
-<%# add to_plain_text for remove the tag like <div> %>
-<p><%= @article.body.to_plain_text %></p>
-<ul>
-  <%# if not the author, then cant see the button %>
+<%# if not the author, then cant see the button %>
+<div class="p-2">
   <% if current_user == @article.user %>
-    <li><%= link_to "Edit", edit_article_path(@article) %></li>
-    <%= form_with url: article_path(@article), method: :delete do |form| %>
-      <%= form.submit "Destroy" %>
-    <% end %>
+    <div class="d-flex justify-content-between mb-5">
+      <%= button_to edit_article_path(@article), class: "btn btn-light border", method: :get do %>
+        <i class="bi bi-pencil fs-6"></i> Edit
+      <% end %>
+      <%= form_with url: article_path(@article), method: :delete do |form| %>
+        <%= button_to article_path(@article), method: :delete, class: "btn btn-light border" do %>
+          <i class="bi bi-pencil fs-6"></i> Delete
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-</ul>
+  <%# name %>
+  <h6>Author: <%= @article.user.name %> (<%= @article.user.email %>)</h6>
+  <%# image %>
+  <div class="bg-dark mx-auto text-center" style="width: 500px;">
+    <div class='text-center'>
+      <%= image_tag @article.image, class: "img-fluid", style: "height: 500px; object-fit: cover;" if @article.image.attached? %>
+    </div>
+  </div>
+  <h1 class="mt-4 mb-3">Title: <%= @article.title %></h1>
+  <%# add to_plain_text for remove the tag like <div> %>
+  <div class="fs-5">Body: <%= @article.body.to_plain_text %></p>
+</div>
 <%# show all comments %>
-<h2>Comments</h2>
-<%= render @article.comments %>
+<% if @article.comments.exists? %>
+  <div class="border px-5 py-4 mb-3">
+    <h2>Comments</h2>
+    <%= render @article.comments %>
+  </div>
+<% end %>
 <%# new comemnt form %>
-<h2>Add a comment:</h2>
-<%= render 'comments/form' %> <%# to render 'app/views/comments/_form', and render the every each comment too %>
+<div class="border px-5 py-4 mb-5">
+  <h2>Add a comment:</h2>
+  <%= render 'comments/form' %> <%# to render 'app/views/comments/_form', and render the every each comment too %>
+</div>

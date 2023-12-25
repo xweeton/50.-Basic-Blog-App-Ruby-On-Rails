@@ -4,12 +4,15 @@ class ArticlesController < ApplicationController
   
   # home page, all articles with pagination if no search, vice versa
   def index
+    # if search then filter the result showing
     if params[:query].present?
-      @articles = Article.search_by_title_and_body(params[:query]).paginate(page: params[:page], per_page: 10)
+      @articles = Article.search_by_title_and_body(params[:query]).paginate(page: params[:page], per_page: 3)
     else
-      @articles = Article.all.paginate(page: params[:page], per_page: 3)
+    # else show all with recent order
+      @articles = Article.all.order(created_at: :desc).paginate(page: params[:page], per_page: 3)
     end
   end
+  
 
   # each article
   def show 
@@ -68,6 +71,6 @@ class ArticlesController < ApplicationController
   # for security, avoid get extra form fields and overwrite our sensitive data
   private
   def article_params
-    params.require(:article).permit( :title, :body, :status, :image)
+    params.require(:article).permit( :title, :body, :image)
   end
 end

@@ -6,8 +6,6 @@ class Article < ApplicationRecord
     has_one_attached :image
     # to allow use Action Text in body
     has_rich_text :body
-    # status
-    include Visible
     # one to many, and enable to see comments in article by 'article.comments', no need extra javascript code
     # dependent: :destroy, when delete the article, will delete its comments together
     has_many :comments, dependent: :destroy

@@ -11,18 +11,12 @@
   <%# body %>
   <div>
     <%= form.label :body %><br>
+    <%# rich text editor %>
     <%= form.rich_text_area :body %>
     <br>
-    <%# rich text editor %>
     <% article.errors.full_messages_for(:body).each do |message| %>
       <div><%= message %></div>
     <% end %>
-  </div>
-  <%# status %>
-  <div>
-    <%= form.label :status %><br>
-    <%# default select 'public' %>
-    <%= form.select :status, Visible::VALID_STATUSES, selected: article.status || 'public' %>
   </div>
   <%# image %>
   <%= form.label :image %>
