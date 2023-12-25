@@ -1,0 +1,20 @@
+<%# @article defined in controller is @article = Article.find(params[:id]) %>
+<h1><%= @article.title %></h1>
+<%= link_to 'home', root_path %>
+<%# add to_plain_text for remove the tag like <div> %>
+<p><%= @article.body.to_plain_text %></p>
+<ul>
+  <%# if not the author, then cant see the button %>
+  <% if current_user == @article.user %>
+    <li><%= link_to "Edit", edit_article_path(@article) %></li>
+    <%= form_with url: article_path(@article), method: :delete do |form| %>
+      <%= form.submit "Destroy" %>
+    <% end %>
+  <% end %>
+</ul>
+<%# show all comments %>
+<h2>Comments</h2>
+<%= render @article.comments %>
+<%# new comemnt form %>
+<h2>Add a comment:</h2>
+<%= render 'comments/form' %> <%# to render 'app/views/comments/_form', and render the every each comment too %>

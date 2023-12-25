@@ -1,0 +1,26 @@
+<nav class="navbar ps-5 navbar-expand-md navbar-light bg-light">
+  <%= link_to "Blog App", root_path, class: "navbar-brand" %>
+  <button class="navbar-toggler me-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto me-5 ">
+      <% if user_signed_in? %>
+        <%# profile %>
+        <li class="nav-item ms-auto">
+          <%= button_to 'Profile', user_path(current_user), method: :get, class: "nav-link" %>
+        </li>
+        <%# logout %>
+        <li class="nav-item ms-auto">
+          <%= button_to destroy_user_session_path, method: :delete, class: "nav-link" do %>
+            <i class="bi bi-door-closed fs-6"></i> Logout
+          <% end %>
+        </li>
+      <% else %>
+        <li class="nav-item">
+          <%= button_to 'Login', new_user_session_path, class: "nav-link" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</nav>

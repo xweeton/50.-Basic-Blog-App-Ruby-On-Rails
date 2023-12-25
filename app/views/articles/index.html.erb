@@ -1,0 +1,35 @@
+<div class='text-center mb-5 pb-3'>
+  <h5 class='mb-4'>Our blog has <%= Article.public_count %> articles and counting!</h5>
+  <%# search bar %>
+  <%= form_with(url: articles_path, method: :get, local: true) do %>
+    <%= text_field_tag :query, params[:query] %>
+    <%= submit_tag "Search", name: nil %>
+  <% end %>
+</div>
+<%# loop out each blog %>
+<% @articles.each do |article| %>
+  <% unless article.archived? %>
+    <%= link_to article_path(article), class: "text-decoration-none text-dark" do %>
+      <%# name %>
+      <p><%= article.user.name %></p>
+      <%# image %>
+      <div class="bg-dark" style="width: 500px;">
+        <div class='text-center'>
+          <%= image_tag article.image, class: "img-fluid", style: "height: 500px; object-fit: cover;" if article.image.attached? %>
+        </div>
+      </div>
+      <%# title %>
+      <p><%= article.title %></p>
+      <%# short description text taken from blog content %>
+      <p><%= truncate(article.body.to_plain_text, length: 20) %></p>
+      <%# number of comments %>
+      <p><%= article.comments.count %> comments</p>
+      <%# create time %>
+      <p class="border-bottom pb-5 mb-5 fw-light"><%= article.created_at.strftime("%B %d, %Y") %></p>
+    <% end %>
+  <% end %>
+<% end %>
+<%# pagination %>
+<%= will_paginate @articles %>
+<%# new_article_path is a helper method, new is action, article is resource %>
+<%= link_to "New Article", new_article_path %>

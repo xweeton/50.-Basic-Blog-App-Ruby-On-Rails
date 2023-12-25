@@ -1,0 +1,17 @@
+<% unless comment.archived? %>
+  <p>
+    <strong>Commenter:</strong>
+    <%= comment.user.email %>
+  </p>
+  <p>
+    <strong>Comment:</strong>
+    <%# add to_plain_text for remove the tag like <div> %>
+    <%= comment.body.to_plain_text %>
+  </p>
+  <%# delete button %>
+  <% if current_user == comment.user || current_user == comment.article.user %>
+    <%= form_with url: [comment.article, comment], method: :delete do |form| %>
+      <%= form.submit "Destroy Comment" %>
+    <% end %>
+  <% end %>
+<% end %>

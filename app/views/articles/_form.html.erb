@@ -1,0 +1,34 @@
+<%# file name with _ underscore, is a 'partial' file, means can be a reusable code then using in other files with "render" method %>
+<%= form_with model: article do |form| %>
+  <%# title %>
+  <div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %> <%# rich text editor %>
+    <% article.errors.full_messages_for(:title).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <%# body %>
+  <div>
+    <%= form.label :body %><br>
+    <%= form.rich_text_area :body %>
+    <br>
+    <%# rich text editor %>
+    <% article.errors.full_messages_for(:body).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <%# status %>
+  <div>
+    <%= form.label :status %><br>
+    <%# default select 'public' %>
+    <%= form.select :status, Visible::VALID_STATUSES, selected: article.status || 'public' %>
+  </div>
+  <%# image %>
+  <%= form.label :image %>
+  <%= form.file_field :image %>
+  <div>
+    <%= form.submit "Submit" %> <%# if not "Submit", it will default to show (create or edit "model_name") in the button %>
+    <%# the create or edit is depend on, if the form found the record in 'form_with model: xxx' then show 'edit' or not found then 'create %>
+  </div>
+<% end %>
